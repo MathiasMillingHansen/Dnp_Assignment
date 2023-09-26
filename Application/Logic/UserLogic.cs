@@ -23,7 +23,7 @@ public class UserLogic : IUserLogic
         ValidateData(userToCreate);
         User toCreate = new User(userToCreate.UserName, userToCreate.Password);
     
-        User created = await userDao.CreateUser(toCreate);
+        User created = await userDao.CreateAsync(toCreate);
     
         return created;
     }
@@ -44,9 +44,18 @@ public class UserLogic : IUserLogic
             throw new Exception("Username must be less than 16 characters!");
     }
 
-    public Task<User> CreateUserAsync(UserCreationDto userToCreate)
+    public async Task<User> CreateUserAsync(UserCreationDto userToCreate)
     {
-        throw new NotImplementedException();
+        User? existing = await userDao.GetByUsername(userToCreate.UserName);
+        if (existing != null)
+            throw new Exception("Username already taken!");
+
+        ValidateData(userToCreate);
+        User toCreate = new User(userToCreate.UserName, userToCreate.Password);
+    
+        User created = await userDao.CreateAsync(toCreate);
+        
+        return created;
     }
 
     public Task<IEnumerable<User>> GetUserAsync(SearchUserParametersDto searchParameters)

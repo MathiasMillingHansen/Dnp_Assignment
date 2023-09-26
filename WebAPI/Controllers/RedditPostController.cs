@@ -9,11 +9,11 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class RedditPostController : ControllerBase
 {
-    private IRedditPostLogic RedditPostLogic;
+    private readonly IRedditPostLogic _redditPostLogic;
 
     public RedditPostController(IRedditPostLogic redditPostLogic)
     {
-        RedditPostLogic = redditPostLogic;
+        _redditPostLogic = redditPostLogic;
     }
     
     [HttpPost]
@@ -21,7 +21,7 @@ public class RedditPostController : ControllerBase
     {
         try
         {
-            RedditPost redditPost = await RedditPostLogic.CreateRedditPostAsync(dto);
+            RedditPost redditPost = await _redditPostLogic.CreateRedditPostAsync(dto);
             return Created($"/posts/{redditPost.Id}", redditPost);
         }
         catch (Exception e)
@@ -36,7 +36,7 @@ public class RedditPostController : ControllerBase
     {
         try
         {
-            RedditPost redditPost = await RedditPostLogic.GetRedditPostById(id);
+            RedditPost redditPost = await _redditPostLogic.GetRedditPostById(id);
             return Ok(redditPost);
         }
         catch (Exception e)

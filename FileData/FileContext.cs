@@ -1,22 +1,26 @@
 ﻿using System.Text.Json;
-
+using FileData;
 using Shared.Models;
 
-namespace FileData;
+namespace FileContext;
 
 public class FileContext
 {
     private const string UserFilePath = "users.json";
     private const string PostFilePath = "posts.json";
-    private UserContainer? UserContainer;
-    private PostContainer? PostContainer;
+    private UserContainer? _userContainer;
+    private PostContainer? _postContainer;
 
-    public ICollection<RedditPost> Posts
+    public ICollection<RedditPost?> Posts
     {
         get
         {
             LoadPosts();
-            return PostContainer!.Posts;
+            if (_postContainer.Posts == null)
+            {
+                _postContainer.Posts = new List<RedditPost>();
+            }
+            return _postContainer!.Posts!;
         }
     }
 
@@ -25,17 +29,17 @@ public class FileContext
         get
         {
             LoadUsers();
-            return UserContainer!.Users;
+            return _userContainer!.Users;
         }
     }
 
     private void LoadUsers()
     {
-        if (UserContainer != null) return;
+        if (_userContainer != null) return;
 
         if (!File.Exists(UserFilePath))
         {
-            UserContainer = new()
+            _userContainer = new()
             {
                 Users = new List<User>()
             };
@@ -43,16 +47,16 @@ public class FileContext
         }
 
         string users = File.ReadAllText(UserFilePath);
-        UserContainer = JsonSerializer.Deserialize<UserContainer>(users);
+        _userContainer = JsonSerializer.Deserialize<UserContainer>(users);
     }
 
     private void LoadPosts()
     {
-        if (PostContainer != null) return;
+        if (_postContainer != null) return;
 
         if (!File.Exists(PostFilePath))
         {
-            PostContainer = new()
+            _postContainer = new()
             {
                 Posts = new List<RedditPost>()
             };
@@ -60,19 +64,19 @@ public class FileContext
         }
 
         string posts = File.ReadAllText(PostFilePath);
-        PostContainer = JsonSerializer.Deserialize<PostContainer>(posts);
+        _postContainer = JsonSerializer.Deserialize<PostContainer>(posts);
     }
 
     public void SaveChanges()
     {
-        string usersSerialized = JsonSerializer.Serialize(UserContainer);
-        string postsSerialized = JsonSerializer.Serialize(PostContainer);
+        string usersSerialized = JsonSerializer.Serialize(_userContainer);
+        string postsSerialized = JsonSerializer.Serialize(_postContainer);
         
         File.WriteAllText(UserFilePath, usersSerialized);
         File.WriteAllText(PostFilePath, postsSerialized);
 
-        UserContainer = null;
-        PostContainer = null;
+        _userContainer = null;
+        _postContainer = null;
     }
     
     

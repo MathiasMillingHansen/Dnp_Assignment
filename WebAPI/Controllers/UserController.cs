@@ -11,11 +11,11 @@ namespace WebAPI.Controllers;
 public class UserController : ControllerBase
 {
 
-    private readonly IUserLogic UserLogic;
+    private readonly IUserLogic _userLogic;
 
-    public UserController(IUserLogic Userlogic)
+    public UserController(IUserLogic userlogic)
     {
-        this.UserLogic = UserLogic;
+        _userLogic = userlogic;
     }
     
     [HttpPost]
@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            User user = await UserLogic.CreateUserAsync(dto);
+            User user = await _userLogic.CreateUserAsync(dto);
             return Created($"/users/{user.Username}", user);
         }
         catch (Exception e)

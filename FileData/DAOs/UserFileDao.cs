@@ -6,9 +6,9 @@ namespace FileData.DAOs;
 
 public class UserFileDao : IUserDao
 {
-    private readonly FileContext context;
+    private readonly FileContext.FileContext context;
 
-    public UserFileDao(FileContext context)
+    public UserFileDao(FileContext.FileContext context)
     {
         this.context = context;
     }
@@ -47,7 +47,10 @@ public class UserFileDao : IUserDao
 
     public Task<User?> GetByUsername(string userName)
     {
-        throw new NotImplementedException();
+        User? existing = context.Users.FirstOrDefault(u =>
+            u.Username.Equals(userName, StringComparison.OrdinalIgnoreCase)
+        );
+        return Task.FromResult(existing);;
     }
 
     public Task<IEnumerable<User>> GetUser(SearchUserParametersDto searchParameters)
