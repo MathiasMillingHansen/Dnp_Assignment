@@ -53,7 +53,7 @@ public class FileContext
         {
             PostContainer = new()
             {
-                Posts = new List<Post>()
+                Posts = new List<RedditPost>()
             };
             return;
         }

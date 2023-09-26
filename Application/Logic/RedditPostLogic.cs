@@ -1,5 +1,6 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
+using Shared.DTOs.RedditPost;
 using Shared.Models;
 
 namespace Application.Logic;
@@ -22,8 +23,9 @@ public class RedditPostLogic : IRedditPostLogic
         if (user == null)
         {
             throw new Exception($"User with id {dto.OwnerId} was not found.");
-            
-            ValidateRedditPost(dto);
+        }
+
+        ValidateRedditPost(dto);
             RedditPost redditPost = new RedditPost(user, dto.Title);
             RedditPost created = await redditPostDao.CreateRedditPost(redditPost);
             return created;

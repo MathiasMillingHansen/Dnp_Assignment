@@ -46,4 +46,14 @@ public class UserLogic : IUserLogic
         if (userName.Length > 15)
             throw new Exception("Username must be less than 16 characters!");
     }
+
+    public Task<User> CreateUserAsync(UserCreationDto userToCreate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<User>> GetUserAsync(SearchUserParametersDto searchParameters)
+    {
+        throw new NotImplementedException();
+    }
 }

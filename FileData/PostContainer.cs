@@ -1,4 +1,6 @@
-﻿namespace FileContext;
+﻿using Shared.Models;
+
+namespace FileContext;
 
 public class PostContainer
 {

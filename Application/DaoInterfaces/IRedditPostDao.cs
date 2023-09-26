@@ -1,4 +1,5 @@
 using Shared.DTOs.RedditPost;
+using Shared.Models;
 
 namespace Application.DaoInterfaces;
 
