@@ -17,17 +17,17 @@ public class RedditPostLogic : IRedditPostLogic
         this.userDao = userDao;
     }
     
-    public async Task<RedditPost> CreateRedditPost(RedditPostCreationDto dto)
+    public async Task<RedditPost> CreateRedditPostAsync(RedditPostCreationDto dto)
     {
-        User? user = await userDao.GetById(dto.OwnerId);
+        User? user = await userDao.GetByUsername(dto.Owner);
         if (user == null)
         {
-            throw new Exception($"User with id {dto.OwnerId} was not found.");
+            throw new Exception($"User with id {dto.Owner} was not found.");
         }
 
         ValidateRedditPost(dto);
-            RedditPost redditPost = new RedditPost(user, dto.Title);
-            RedditPost created = await redditPostDao.CreateRedditPost(redditPost);
+            RedditPost redditPost = new RedditPost();
+            RedditPost created = await redditPostDao.CreateRedditPostAsync(redditPost);
             return created;
     }
 
@@ -36,32 +36,33 @@ public class RedditPostLogic : IRedditPostLogic
         return redditPostDao.GetRedditPost(searchParameters);
     }
 
-    public async Task UpdateRedditPost(RedditPostUpdateDto redditPost)
+    public async Task UpdateRedditPostAsync(RedditPostUpdateDto redditPost)
     {
         RedditPost? existing = await redditPostDao.GetRedditPostById(redditPost.Id);
+        
         if (existing == null)
         {
-            throw new Exception(message: $"RedditPost with ID {dto.Id} not found!");
+            throw new Exception(message: $"RedditPost with ID {redditPost.Id} not found!");
         }
         
         User? user = null;
-        if (dto.OwnerId != null)
+        if (redditPost.Owner != null)
         {
-            user = await userDao.GetById((int)dto.OwnerId);
+            user = await userDao.GetByUsername(redditPost.Owner);
             if (user == null)
             {
-                throw new Exception($"User with id {dto.OwnerId} was not found.");
+                throw new Exception($"User with id {redditPost.Owner} was not found.");
             }
         }
-        User userToUse = user ?? existing.Owner;
-        string titleToUse = dto.Title ?? existing.Title;
+        User userToUse = user ?? existing.User;
+        string titleToUse = redditPost.Title ?? existing.Title;
 
-        RedditPost updated = new(userToUse, titleToUse)
+        RedditPost updated = new RedditPost()
         {
             Id = existing.Id,
         };
         ValidateRedditPost(updated);
-        await redditPostDao.UpdateRedditPost(updated);
+        await redditPostDao.UpdateRedditPostAsync(updated);
     }
 
     public async Task DeleteRedditPost(int id)
@@ -86,6 +87,6 @@ public class RedditPostLogic : IRedditPostLogic
 
     private void ValidateRedditPost(RedditPost redditPost)
     {
-        if (string.IsNullOrEmpty(dto.Title)) throw new Exception("Title cannot be empty.");
+        if (string.IsNullOrEmpty(redditPost.Title)) throw new Exception("Title cannot be empty.");
     }
 }

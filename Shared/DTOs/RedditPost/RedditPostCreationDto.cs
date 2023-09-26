@@ -2,12 +2,12 @@ namespace Shared.DTOs.RedditPost;
 
 public class RedditPostCreationDto
 {
-    public int OwnerId { get; }
+    public string Owner { get; }
     public string Title { get; }
 
-    public RedditPostCreationDto(int ownerId, string title)
+    public RedditPostCreationDto(string owner, string title)
     {
-        OwnerId = ownerId;
+        Owner = owner;
         Title = title;
     }
 }

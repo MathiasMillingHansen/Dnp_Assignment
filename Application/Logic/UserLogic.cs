@@ -21,7 +21,7 @@ public class UserLogic : IUserLogic
         if (existing != null)
             throw new Exception("Username already taken!");
         ValidateData(userToCreate);
-        User toCreate = new User
+        User toCreate = new User()
         {
             Username = userToCreate.UserName
         };
