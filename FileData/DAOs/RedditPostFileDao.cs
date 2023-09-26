@@ -16,7 +16,7 @@ public class RedditPostFileDao : IRedditPostDao
     public Task<RedditPost> CreateRedditPostAsync(RedditPost redditPost)
     {
         int postId = 1;
-        if (context.Posts.Any() || context.Posts != null)
+        if (context.Posts.Any())
         {
             postId = context.Posts.Max(p => p.Id);
             postId++;

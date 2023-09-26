@@ -53,8 +53,8 @@ public class FileContext
     private void LoadPosts()
     {
         if (_postContainer != null) return;
-
-        if (!File.Exists(PostFilePath))
+        
+        if (!File.Exists(PostFilePath) || File.ReadAllText(PostFilePath) == "null")
         {
             _postContainer = new()
             {
@@ -64,6 +64,7 @@ public class FileContext
         }
 
         string posts = File.ReadAllText(PostFilePath);
+        Console.WriteLine(posts);
         _postContainer = JsonSerializer.Deserialize<PostContainer>(posts);
     }
 
