@@ -2,7 +2,7 @@
 using Shared.DTOs;
 using Shared.Models;
 
-namespace FileContext.DAOs;
+namespace FileData.DAOs;
 
 public class UserFileDao : IUserDao
 {
@@ -34,7 +34,10 @@ public class UserFileDao : IUserDao
 
     public Task<User?> GetByUsernameAsync(string username)
     {
-        throw new NotImplementedException();
+        User? existing = context.Users.FirstOrDefault(u =>
+            u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)
+        );
+        return Task.FromResult(existing);
     }
 
     public Task<User> CreateUser(User user)

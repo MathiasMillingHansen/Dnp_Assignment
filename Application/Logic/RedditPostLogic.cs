@@ -19,14 +19,14 @@ public class RedditPostLogic : IRedditPostLogic
     
     public async Task<RedditPost> CreateRedditPostAsync(RedditPostCreationDto dto)
     {
-        User? user = await userDao.GetByUsername(dto.Owner);
+        User? user = await userDao.GetByUsername(dto.Owner.Username);
         if (user == null)
         {
             throw new Exception($"User with id {dto.Owner} was not found.");
         }
 
         ValidateRedditPost(dto);
-            RedditPost redditPost = new RedditPost();
+            RedditPost redditPost = new RedditPost(dto.Title, dto.Body, dto.Owner);
             RedditPost created = await redditPostDao.CreateRedditPostAsync(redditPost);
             return created;
     }
@@ -36,33 +36,23 @@ public class RedditPostLogic : IRedditPostLogic
         return redditPostDao.GetRedditPost(searchParameters);
     }
 
-    public async Task UpdateRedditPostAsync(RedditPostUpdateDto redditPost)
+    public async Task UpdateRedditPostAsync(RedditPostUpdateDto redditPostDto)
     {
-        RedditPost? existing = await redditPostDao.GetRedditPostById(redditPost.Id);
+        RedditPost? existing = await redditPostDao.GetRedditPostById(redditPostDto.Id);
         
         if (existing == null)
         {
-            throw new Exception(message: $"RedditPost with ID {redditPost.Id} not found!");
+            throw new Exception(message: $"RedditPost with ID {redditPostDto.Id} not found!");
+        }
+
+        if (String.IsNullOrEmpty(redditPostDto.Body))
+        {
+            throw new Exception("Body cannot be empty.");
         }
         
-        User? user = null;
-        if (redditPost.Owner != null)
-        {
-            user = await userDao.GetByUsername(redditPost.Owner);
-            if (user == null)
-            {
-                throw new Exception($"User with id {redditPost.Owner} was not found.");
-            }
-        }
-        User userToUse = user ?? existing.User;
-        string titleToUse = redditPost.Title ?? existing.Title;
-
-        RedditPost updated = new RedditPost()
-        {
-            Id = existing.Id,
-        };
-        ValidateRedditPost(updated);
-        await redditPostDao.UpdateRedditPostAsync(updated);
+        existing.Body = redditPostDto.Body;
+        
+        await redditPostDao.UpdateRedditPostAsync(existing);
     }
 
     public async Task DeleteRedditPost(int id)

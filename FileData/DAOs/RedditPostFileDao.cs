@@ -2,7 +2,7 @@
 using Shared.DTOs.RedditPost;
 using Shared.Models;
 
-namespace FileContext.DAOs;
+namespace FileData.DAOs;
 
 public class RedditPostFileDao : IRedditPostDao
 {
@@ -13,7 +13,7 @@ public class RedditPostFileDao : IRedditPostDao
         this.context = context;
     }
 
-    public Task<RedditPost> CreateAsync(RedditPost redditPost)
+    public Task<RedditPost> CreateUserAsync(RedditPost redditPost)
     {
         int postId = 1;
         if (context.Posts.Any())
@@ -30,24 +30,34 @@ public class RedditPostFileDao : IRedditPostDao
         return Task.FromResult(redditPost);
     }
 
-    public Task<RedditPost?> GetByUsernameAsync(string username)
+    public Task<ICollection<RedditPost>?> GetByUsernameAsync(string username)
+    {
+        ICollection<RedditPost> postsByUsername = new List<RedditPost>();
+
+        foreach (RedditPost _redditPost in context.Posts)
+        {
+            if (_redditPost.User.Username.Equals(username))
+            {
+                postsByUsername.Add(_redditPost);
+            }
+        }
+        return Task.FromResult(postsByUsername);
+    }
+
+    public Task<RedditPost> CreateRedditPostAsync(RedditPost redditPost)
     {
         throw new NotImplementedException();
     }
 
-    public Task<RedditPost> CreateRedditPost(RedditPost redditPost)
+    public Task<IEnumerable<RedditPost>> GetRedditPost(SearchRedditPostParametersDto searchParameters)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<RedditPost>> GetRedditPosts(SearchRedditPostParametersDto searchParameters)
+    public Task UpdateRedditPostAsync(RedditPost redditPostToUpdate)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateRedditPost(RedditPost redditPost)
-    {
-        throw new NotImplementedException();
+        context.SaveChanges();
+        return Task.FromResult(redditPostToUpdate);
     }
 
     public Task<RedditPost> GetRedditPostById(int id)

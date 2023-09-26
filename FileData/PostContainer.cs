@@ -1,6 +1,6 @@
 ﻿using Shared.Models;
 
-namespace FileContext;
+namespace FileData;
 
 public class PostContainer
 {
