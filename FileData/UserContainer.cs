@@ -2,9 +2,8 @@
 
 namespace FileContext;
 
-public class DataContainer
+public class UserContainer
 {
     public ICollection<User> Users { get; set; }
-    public ICollection<RedditPost> Posts { get; set; }
     
 }
