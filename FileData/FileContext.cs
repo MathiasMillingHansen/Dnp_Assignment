@@ -62,4 +62,18 @@ public class FileContext
         PostContainer = JsonSerializer.Deserialize<PostContainer>(posts);
     }
 
+    public void SaveChanges()
+    {
+        string usersSerialized = JsonSerializer.Serialize(UserContainer);
+        string postsSerialized = JsonSerializer.Serialize(PostContainer);
+        
+        File.WriteAllText(UserFilePath, usersSerialized);
+        File.WriteAllText(PostFilePath, postsSerialized);
+
+        UserContainer = null;
+        PostContainer = null;
+    }
+    
+    
+
 }
