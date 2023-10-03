@@ -24,10 +24,14 @@
             <label>Title:</label>
             <input type="text" @bind="_redditPostTitle"/>
         </div>
+        <div class="form-group text-body">
+            <label>Body:</label>
+            <input type="text" @bind="_redditPostBody"/>
+        </div>
         <div class="form-group field">
             <label>Assignee:</label>
             <select @bind="_selectedUser">
-                <option>Choose</option>
+            <option></option>
                 @foreach (User user in _users)
                 {
                     <option value="@user.Username">@user.Username</option>
@@ -48,7 +52,7 @@
     private IEnumerable<User>? _users;
     private OwnerDto _selectedUser;
     private string _redditPostTitle = "";
-    private readonly string _redditPostBody = "";
+    private string _redditPostBody = "";
 
     private string _msg = "";
 
@@ -89,7 +93,7 @@
         {
             RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser = new OwnerDto(_selectedUser.Username), _redditPostTitle, _redditPostBody);
             await RedditPostService.CreatePostAsync(dto);
-            NavMgr.NavigateTo("/");
+            NavMgr.NavigateTo("/CreateRedditPost");
         }
         catch (Exception e)
         {
