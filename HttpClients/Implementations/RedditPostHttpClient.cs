@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using Clients.ClientInterfaces;
 using Shared.DTOs.RedditPost;
+using Shared.Models;
 
 namespace Clients.Implementations;
 
@@ -22,5 +24,16 @@ public class RedditPostHttpClient : IRedditPostService
             string content = await response.Content.ReadAsStringAsync();
             throw new Exception(content);
         }
+    }
+
+    public async Task<ICollection<RedditPost>> GetPostsAsync(string? owner, string? title, string? body)
+    {
+        HttpResponseMessage response = await _client.GetAsync("/RedditPost");
+        string content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        return JsonSerializer.Deserialize<ICollection<RedditPost>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
     }
 }

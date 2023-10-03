@@ -6,7 +6,7 @@ namespace Application.DaoInterfaces;
 public interface IRedditPostDao
 {
     Task<RedditPost>CreateRedditPostAsync(RedditPost redditPost);
-    Task<IEnumerable<RedditPost>> GetRedditPost(SearchRedditPostParametersDto searchParameters);
+    Task<IEnumerable<RedditPost>> GetRedditPostAsync();
     Task UpdateRedditPostAsync(RedditPost redditPost);
     Task<RedditPost> GetRedditPostById(int id);
     Task DeleteRedditPost(int id);

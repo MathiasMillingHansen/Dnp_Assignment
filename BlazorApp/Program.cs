@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using BlazorApp.Data;
 using Clients.ClientInterfaces;
 using Clients.Implementations;
 

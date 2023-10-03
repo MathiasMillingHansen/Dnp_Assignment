@@ -53,9 +53,9 @@ public class RedditPostFileDao : IRedditPostDao
         return Task.FromResult(redditPost);
     }*/
 
-    public Task<IEnumerable<RedditPost>> GetRedditPost(SearchRedditPostParametersDto searchParameters)
+    public async Task<IEnumerable<RedditPost>> GetRedditPostAsync()
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(_context.Posts); 
     }
 
     public Task UpdateRedditPostAsync(RedditPost redditPostToUpdate)

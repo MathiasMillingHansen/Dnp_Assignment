@@ -31,9 +31,9 @@ public class RedditPostLogic : IRedditPostLogic
         return created;
     }
 
-    public Task<IEnumerable<RedditPost>> GetRedditPost(SearchRedditPostParametersDto searchParameters)
+    public async Task<IEnumerable<RedditPost>> GetRedditPostAsync()
     {
-        return redditPostDao.GetRedditPost(searchParameters);
+        return await redditPostDao.GetRedditPostAsync();
     }
 
     public async Task UpdateRedditPostAsync(RedditPostUpdateDto redditPostDto)

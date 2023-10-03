@@ -30,8 +30,23 @@ public class RedditPostController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
+    
     [HttpGet]
+    public async Task<ActionResult<IEnumerable<RedditPost>>> GetAllAsync()
+    {
+        try
+        {
+            IEnumerable<RedditPost> redditPosts = await _redditPostLogic.GetRedditPostAsync();
+            return Ok(redditPosts);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    /*[HttpGet]
     public async Task<ActionResult<RedditPost>> GetByIdAsync([FromQuery] int id)
     {
         try
@@ -44,7 +59,7 @@ public class RedditPostController : ControllerBase
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
         }
-    }
+    }*/
 
 
 }
