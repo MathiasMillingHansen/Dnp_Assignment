@@ -18,6 +18,11 @@
       "Username": "TestPerson",
       "Password": "Hello",
       "RedditPosts": []
+    },
+    {
+      "Username": "513513",
+      "Password": "135135135",
+      "RedditPosts": []
     }
   ]
 }

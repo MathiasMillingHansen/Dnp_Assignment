@@ -18,12 +18,7 @@ builder.Services.AddScoped<IUserDao, UserFileDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IRedditPostDao, RedditPostFileDao>();
 builder.Services.AddScoped<IRedditPostLogic, RedditPostLogic>();
-builder.Services.AddScoped(
-    sp => 
-        new HttpClient { 
-            BaseAddress = new Uri("https://localhost:7093") 
-        }
-);
+
 
 var app = builder.Build();
 
