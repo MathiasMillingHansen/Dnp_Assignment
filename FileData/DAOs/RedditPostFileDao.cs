@@ -2,32 +2,32 @@
 using Shared.DTOs.RedditPost;
 using Shared.Models;
 
-namespace FileData.DAOs;
+namespace FileContext.DAOs;
 
 public class RedditPostFileDao : IRedditPostDao
 {
-    private readonly FileContext context;
+    private readonly FileData.FileContext _context;
 
-    public RedditPostFileDao(FileContext context)
-    {
-        this.context = context;
+    public RedditPostFileDao(FileData.FileContext context)
+    { 
+        _context = context;
     }
 
     public Task<RedditPost> CreateRedditPostAsync(RedditPost redditPost)
     {
         int postId = 1;
-        /*
-        if(context.Posts != null)
+        
+        if(_context.Posts != null)
         {
-            postId = context.Posts.Count + 1;
+            postId = _context.Posts.Count + 1;
         }
-        */
+        
 
         redditPost.Id = postId;
         
-        context.Posts.Add(redditPost);
-        context.SaveChanges();
-        context.UpdateUserPostList(redditPost);
+        _context.Posts.Add(redditPost);
+        _context.SaveChanges();
+        _context.UpdateUserPostList(redditPost);
 
         return Task.FromResult(redditPost);
     }
@@ -36,7 +36,7 @@ public class RedditPostFileDao : IRedditPostDao
     {
         ICollection<RedditPost> postsByUsername = new List<RedditPost>();
 
-        foreach (RedditPost _redditPost in context.Posts)
+        foreach (RedditPost _redditPost in _context.Posts)
         {
             if (_redditPost.User.Username.Equals(username))
             {
@@ -60,7 +60,7 @@ public class RedditPostFileDao : IRedditPostDao
 
     public Task UpdateRedditPostAsync(RedditPost redditPostToUpdate)
     {
-        context.SaveChanges();
+        _context.SaveChanges();
         return Task.FromResult(redditPostToUpdate);
     }
 

@@ -61,7 +61,7 @@ public class FileContext
             return;
         }
         string posts = File.ReadAllText(PostFilePath);
-        if (posts.Equals("null"))
+/*        if (posts.Equals("null"))
         {
             _postContainer = new PostContainer
             {
@@ -69,25 +69,31 @@ public class FileContext
             };
         }
         else
-        {
+        {*/
             _postContainer = JsonSerializer.Deserialize<PostContainer>(posts);
-        }
+        //}
     }
 
     public void SaveChanges()
     {
-        string usersSerialized = JsonSerializer.Serialize(_userContainer, new JsonSerializerOptions
+        if (_userContainer is not null)
         {
-            WriteIndented = true
-        });
-        string postsSerialized = JsonSerializer.Serialize(_postContainer, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-        
-        File.WriteAllText(UserFilePath, usersSerialized);
-        File.WriteAllText(PostFilePath, postsSerialized);
+            string usersSerialized = JsonSerializer.Serialize(_userContainer, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(UserFilePath, usersSerialized);
+        }
 
+        if (_postContainer is not null)
+        {
+            string postsSerialized = JsonSerializer.Serialize(_postContainer, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(PostFilePath, postsSerialized);
+        }
+        
         _userContainer = null;
         _postContainer = null;
     }
