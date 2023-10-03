@@ -1,12 +1,11 @@
-namespace Shared.DTOs.User
+namespace Shared.DTOs.User;
+
+public class GetUserDto
 {
-    public class GetUserDto
+    public string Username { get; set; }
+    
+    public GetUserDto(string username)
     {
-        public string Username { get; set; }
-        
-        public GetUserDto(string username)
-        {
-            Username = username;
-        }
+        Username = username;
     }
 }
