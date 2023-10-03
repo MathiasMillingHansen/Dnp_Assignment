@@ -7,16 +7,15 @@ namespace Application.Logic;
 
 public class RedditPostLogic : IRedditPostLogic
 {
-    
     private readonly IRedditPostDao redditPostDao;
     private readonly IUserDao userDao;
-    
+
     public RedditPostLogic(IRedditPostDao redditPostDao, IUserDao userDao)
     {
         this.redditPostDao = redditPostDao;
         this.userDao = userDao;
     }
-    
+
     public async Task<RedditPost> CreateRedditPostAsync(RedditPostCreationDto dto)
     {
         User? user = await userDao.GetByUsername(dto.Owner.Username);
@@ -26,9 +25,9 @@ public class RedditPostLogic : IRedditPostLogic
         }
 
         ValidateRedditPost(dto);
-            RedditPost redditPost = new RedditPost(dto.Title, dto.Body, dto.Owner);
-            RedditPost created = await redditPostDao.CreateRedditPostAsync(redditPost);
-            return created;
+        RedditPost redditPost = new RedditPost(dto.Title, dto.Body, dto.Owner);
+        RedditPost created = await redditPostDao.CreateRedditPostAsync(redditPost);
+        return created;
     }
 
     public Task<IEnumerable<RedditPost>> GetRedditPost(SearchRedditPostParametersDto searchParameters)
@@ -39,7 +38,7 @@ public class RedditPostLogic : IRedditPostLogic
     public async Task UpdateRedditPostAsync(RedditPostUpdateDto redditPostDto)
     {
         RedditPost? existing = await redditPostDao.GetRedditPostById(redditPostDto.Id);
-        
+
         if (existing == null)
         {
             throw new Exception(message: $"RedditPost with ID {redditPostDto.Id} not found!");
@@ -49,9 +48,9 @@ public class RedditPostLogic : IRedditPostLogic
         {
             throw new Exception("Body cannot be empty.");
         }
-        
+
         existing.Body = redditPostDto.Body;
-        
+
         await redditPostDao.UpdateRedditPostAsync(existing);
     }
 
@@ -62,6 +61,7 @@ public class RedditPostLogic : IRedditPostLogic
         {
             throw new Exception(message: $"RedditPost with ID {id} not found!");
         }
+
         await redditPostDao.DeleteRedditPost(id);
     }
 
@@ -75,8 +75,8 @@ public class RedditPostLogic : IRedditPostLogic
         if (string.IsNullOrEmpty(dto.Title)) throw new Exception("Title cannot be empty.");
     }
 
-    private void ValidateRedditPost(RedditPost redditPost)
+    /*private void ValidateRedditPost(RedditPost redditPost)
     {
         if (string.IsNullOrEmpty(redditPost.Title)) throw new Exception("Title cannot be empty.");
-    }
+    }*/
 }

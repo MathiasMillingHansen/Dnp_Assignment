@@ -6,9 +6,9 @@ namespace FileData.DAOs;
 
 public class RedditPostFileDao : IRedditPostDao
 {
-    private readonly FileContext.FileContext context;
+    private readonly FileContext context;
 
-    public RedditPostFileDao(FileContext.FileContext context)
+    public RedditPostFileDao(FileContext context)
     {
         this.context = context;
     }
@@ -16,16 +16,18 @@ public class RedditPostFileDao : IRedditPostDao
     public Task<RedditPost> CreateRedditPostAsync(RedditPost redditPost)
     {
         int postId = 1;
-        if (context.Posts.Any())
+        /*
+        if(context.Posts != null)
         {
-            postId = context.Posts.Max(p => p.Id);
-            postId++;
+            postId = context.Posts.Count + 1;
         }
+        */
 
         redditPost.Id = postId;
         
-        context.Posts!.Add(redditPost);
+        context.Posts.Add(redditPost);
         context.SaveChanges();
+        context.UpdateUserPostList(redditPost);
 
         return Task.FromResult(redditPost);
     }

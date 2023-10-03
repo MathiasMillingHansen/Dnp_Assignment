@@ -6,9 +6,9 @@ namespace FileData.DAOs;
 
 public class UserFileDao : IUserDao
 {
-    private readonly FileContext.FileContext context;
+    private readonly FileContext context;
 
-    public UserFileDao(FileContext.FileContext context)
+    public UserFileDao(FileContext context)
     {
         this.context = context;
     }

@@ -2,7 +2,7 @@
 using FileData;
 using Shared.Models;
 
-namespace FileContext;
+namespace FileData;
 
 public class FileContext
 {
@@ -10,17 +10,15 @@ public class FileContext
     private const string PostFilePath = "posts.json";
     private UserContainer? _userContainer;
     private PostContainer? _postContainer;
+    
 
-    public ICollection<RedditPost?> Posts
+    public ICollection<RedditPost> Posts
     {
         get
         {
             LoadPosts();
-            if (_postContainer.Posts == null)
-            {
-                _postContainer.Posts = new List<RedditPost>();
-            }
-            return _postContainer!.Posts!;
+
+            return _postContainer!.Posts;
         }
     }
 
@@ -54,7 +52,7 @@ public class FileContext
     {
         if (_postContainer != null) return;
         
-        if (!File.Exists(PostFilePath) || File.ReadAllText(PostFilePath) == "null")
+        if (!File.Exists(PostFilePath))
         {
             _postContainer = new()
             {
@@ -62,16 +60,30 @@ public class FileContext
             };
             return;
         }
-
         string posts = File.ReadAllText(PostFilePath);
-        Console.WriteLine(posts);
-        _postContainer = JsonSerializer.Deserialize<PostContainer>(posts);
+        if (posts.Equals("null"))
+        {
+            _postContainer = new PostContainer
+            {
+                Posts = new List<RedditPost>()
+            };
+        }
+        else
+        {
+            _postContainer = JsonSerializer.Deserialize<PostContainer>(posts);
+        }
     }
 
     public void SaveChanges()
     {
-        string usersSerialized = JsonSerializer.Serialize(_userContainer);
-        string postsSerialized = JsonSerializer.Serialize(_postContainer);
+        string usersSerialized = JsonSerializer.Serialize(_userContainer, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+        string postsSerialized = JsonSerializer.Serialize(_postContainer, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
         
         File.WriteAllText(UserFilePath, usersSerialized);
         File.WriteAllText(PostFilePath, postsSerialized);
@@ -79,7 +91,18 @@ public class FileContext
         _userContainer = null;
         _postContainer = null;
     }
-    
-    
 
+
+    public void UpdateUserPostList(RedditPost redditPost)
+    {
+        LoadUsers();
+        foreach (User user in _userContainer!.Users)
+        {
+            if (user.Username.Equals(redditPost.User.Username))
+            {
+                user.RedditPosts.Add(redditPost);
+                SaveChanges();
+            }
+        }
+    }
 }

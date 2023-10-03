@@ -4,6 +4,6 @@ namespace FileData;
 
 public class PostContainer
 {
-    public ICollection<RedditPost>? Posts { get; set; }
+    public ICollection<RedditPost> Posts { get; set; }
     
 }
