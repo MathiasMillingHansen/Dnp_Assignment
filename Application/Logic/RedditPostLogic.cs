@@ -3,6 +3,7 @@ using Application.LogicInterfaces;
 using Shared.DTOs.RedditPost;
 using Shared.Models;
 
+
 namespace Application.Logic;
 
 public class RedditPostLogic : IRedditPostLogic
@@ -65,9 +66,9 @@ public class RedditPostLogic : IRedditPostLogic
         await redditPostDao.DeleteRedditPost(id);
     }
 
-    public Task<RedditPost> GetRedditPostById(int id)
+    public async Task<RedditPost> GetRedditPostById(int id)
     {
-        return redditPostDao.GetRedditPostById(id);
+        return await redditPostDao.GetRedditPostById(id);
     }
 
     private void ValidateRedditPost(RedditPostCreationDto dto)

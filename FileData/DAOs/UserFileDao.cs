@@ -62,4 +62,9 @@ public class UserFileDao : IUserDao
     {
         throw new NotImplementedException();
     }
+
+    public Task<ICollection<User>> GetAllAsync()
+    {
+        return Task.FromResult(context.Users);
+    }
 }

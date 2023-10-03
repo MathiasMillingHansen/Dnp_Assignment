@@ -1,0 +1,23 @@
+{
+  "Users": [
+    {
+      "Username": "Mathias",
+      "Password": "Test",
+      "RedditPosts": [
+        {
+          "Title": "GG",
+          "Body": "It works",
+          "User": {
+            "Username": "Mathias"
+          },
+          "Id": 1
+        }
+      ]
+    },
+    {
+      "Username": "TestPerson",
+      "Password": "Hello",
+      "RedditPosts": []
+    }
+  ]
+}

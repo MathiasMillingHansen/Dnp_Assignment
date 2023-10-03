@@ -1,6 +1,7 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
 using Shared.DTOs;
+using Shared.DTOs.User;
 using Shared.Models;
 
 namespace Application.Logic;
@@ -61,5 +62,16 @@ public class UserLogic : IUserLogic
     public Task<IEnumerable<User>> GetUserAsync(SearchUserParametersDto searchParameters)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<ICollection<GetUserDto>> GetAllUsersAsync()
+    {
+        ICollection<GetUserDto> users = new List<GetUserDto>();
+        foreach (User user in await userDao.GetAllAsync())
+        {
+            users.Add(new GetUserDto(user.Username));
+        }
+
+        return users;
     }
 }

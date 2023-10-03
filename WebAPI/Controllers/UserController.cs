@@ -1,6 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
+using Shared.DTOs.User;
 using Shared.Models;
 
 namespace WebAPI.Controllers;
@@ -25,6 +26,21 @@ public class UserController : ControllerBase
         {
             User user = await _userLogic.CreateUserAsync(dto);
             return Created($"/users/{user.Username}", user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ICollection<GetUserDto>>> GetAllAsync()
+    {
+        try
+        {
+            ICollection<GetUserDto> users = await _userLogic.GetAllUsersAsync();
+            return Ok(users);
         }
         catch (Exception e)
         {
