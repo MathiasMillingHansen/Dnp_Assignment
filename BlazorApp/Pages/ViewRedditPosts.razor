@@ -3,10 +3,38 @@
 @using Clients.ClientInterfaces
 @inject IRedditPostService RedditPostService;
 
-<h3>ViewRedditPosts</h3>
+<h3 style="display: flex; width: 100%; justify-content: center">View Reddit Posts</h3>
 
-<div>
-    <button @onclick="LoadRedditPosts">Load</button>
+<div class="filter-bar">
+    <div class="filters-container">
+        <img src="icons/@(_doShowFilters ? "clear_" : "")funnel.png" class="funnel" style="width: 32px; height: 32px" @onclick="@(() => _doShowFilters = !_doShowFilters)" alt="Funnel"/>
+    </div>
+    @if (_doShowFilters)
+    {
+        <div class="filterBar2">
+
+            <div class="filter">
+                <label>Username:</label>
+                <input type="text" @bind="_ownerFilter"/>
+            </div>
+
+            <div class="filter">
+                <label>User id:</label>
+                <input type="number" @bind="_idFilter"/>
+            </div>
+
+            <div class="filter">
+                <label>Title contains:</label>
+                <input type="text" @bind="_titleFilter"/>
+            </div>
+
+        </div>
+    }
+</div>
+
+
+<div class="LoadPostBar">
+    <button class="LoadButton" @onclick="LoadRedditPosts">Load posts</button>
 </div>
 
 @if (_redditPosts == null)
@@ -20,32 +48,32 @@ else
 {
     @foreach (var item in _redditPosts)
     {
-        <div class="border border-primary rounded ">
+        <div class="box-shadow">
 
             <span>
 
-                <div class="RedditPost" style="margin: 1em;">
+                <div class="RedditPost">
 
-                    <div class="row" style="width:100%">
+                    <div class="row" style="width:100%; padding: 1em; margin-bottom: 2em">
 
-                        <div class="col-4" style="justify-content: left; display: flex">
-                            <div class="PostOwner">@item.User.Username</div>
+                        <div class="col-4" style="justify-content: left; display: flex; align-items: center">
+                            <div class="PostOwner">Post Creator: <a class="LinkToUser" href="/user?Username=@item.User.Username">@item.User.Username</a></div>
                         </div>
 
-                        <div class="col-4" style="justify-content: center; display: flex">
-                            <div class="PostTitle">@item.Title</div>
+                        <div class="col-4" style="justify-content: center; display: flex; align-items: center">
+                            <div class="PostTitle">
+                                <a class="LinkToPost" href="/RedditPost?id=@item.Id.ToString()">@item.Title</a>
+                            </div>
                         </div>
 
-                        <div class="col-4" style="justify-content: right; display: flex">
+                        <div class="col-4" style="justify-content: right; display: flex; align-items: center">
                             <div class="PostId">Post Id: @item.Id.ToString()</div>
                         </div>
 
                     </div>
 
-                    <div class="row" style="width:100%">
-                        
+                    <div class="row" style="width:100%; padding: 1em">
                         <div class="PostBody">@item.Body</div>
-
                     </div>
 
                 </div>
@@ -63,12 +91,17 @@ else
 @code {
     private IEnumerable<RedditPost>? _redditPosts;
     private string _msg = "";
+    private bool _doShowFilters = false;
+
+    private string? _ownerFilter;
+    private string? _titleFilter;
+    private string? _idFilter;
 
     private async Task LoadRedditPosts()
     {
         try
         {
-            _redditPosts = await RedditPostService.GetPostsAsync("", "", "");
+            _redditPosts = await RedditPostService.GetPostsAsync(_ownerFilter, _titleFilter, _idFilter);
         }
         catch (Exception e)
         {

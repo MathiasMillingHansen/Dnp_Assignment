@@ -26,7 +26,7 @@ public class RedditPostHttpClient : IRedditPostService
         }
     }
 
-    public async Task<ICollection<RedditPost>> GetPostsAsync(string? owner, string? title, string? body)
+    public async Task<ICollection<RedditPost>> GetPostsAsync(string? owner, string? title, string? id)
     {
         HttpResponseMessage response = await _client.GetAsync("/RedditPost");
         string content = await response.Content.ReadAsStringAsync();

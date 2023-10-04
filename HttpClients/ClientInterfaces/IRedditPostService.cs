@@ -9,6 +9,6 @@ public interface IRedditPostService
     Task <ICollection<RedditPost>> GetPostsAsync(
         string? owner,
         string? title,
-        string? body
+        string? id
         );
 }

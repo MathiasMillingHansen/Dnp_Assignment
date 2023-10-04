@@ -54,15 +54,22 @@
 
 .RedditPost {
     /*border: 0.5em solid rgba(255, 161, 83, 0.97);*/
+    padding: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    mask-border-mode: luminance;
+    min-height: 25em;
+    margin: 2em;
 }
 
-.border-primary {
-    border: 0.5em solid rgba(255, 161, 83, 0.97) !important;
+.box-shadow {
+    /*border: 2px solid rgba(255, 161, 83, 0.97);*/
+    mask-border-mode: luminance;
+    box-shadow: rgba(255, 161, 83, 0.35) 0px 5px 15px;
+    width: 100%;
+    margin: 2em;
 }
 
 .PostId {
@@ -76,7 +83,38 @@
     color: black;
     font-size: 1em;
     font-weight: bold;
-    width: min-content;
+    width: 100%;
+    font-family: "Calibri";
+    
+}
+
+.LinkToUser{
+    text-decoration: underline;
+    color: black;
+}
+
+.LinkToPost
+{
+    text-decoration: underline;
+    color: black;
+}
+
+.filterBar2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 1em;
+}
+
+.LoadPostBar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 1em;
 }
 
 .PostBody {
@@ -86,7 +124,8 @@
     color: black;
     font-size: 1em;
     font-weight: bold;
-    width: min-content;
+    width: 100%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 
@@ -94,8 +133,55 @@
     display: flex;
     flex-wrap: nowrap;
     color: black;
-    font-size: 2em;
+    font-size: 1.25em;
     font-weight: bold;
     width: min-content;
+    font-family: "Calibri";
+    width: 100%;
+    justify-content: center;
+}
+
+.LoadButton {
+    background-color: whitesmoke;
+    margin: 1em;
+    padding: 0.5em;
+    display: flex;
+    border: 2px solid;
+    border-color: whitesmoke;
+    mask-border-mode: luminance;
+    box-shadow: rgba(255, 161, 83, 0.75) 0px 5px 15px;
+}
+
+.filter-bar {
+    box-shadow: rgba(255, 161, 83, 0.75) 0px 5px 15px;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 10px;
+    width: min-content;
+}
+
+.funnel{
+    cursor: pointer;
+    display: flex;
+    justify-content: left;
+}
+
+.filter {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
 }
 
