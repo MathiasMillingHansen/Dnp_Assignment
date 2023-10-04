@@ -31,7 +31,7 @@ public class RedditPostController : ControllerBase
         }
     }
     
-    [HttpGet]
+    /*[HttpGet]
     public async Task<ActionResult<IEnumerable<RedditPost>>> GetAllAsync()
     {
         try
@@ -44,7 +44,7 @@ public class RedditPostController : ControllerBase
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
         }
-    }
+    }*/
 
     [HttpGet]
     public async Task<ActionResult<ICollection<RedditPost>>> GetFromQuery(string? owner, string? title, string? id)

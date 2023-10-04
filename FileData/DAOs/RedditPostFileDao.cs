@@ -74,12 +74,27 @@ public class RedditPostFileDao : IRedditPostDao
         throw new NotImplementedException();
     }
 
-    public async Task<ICollection<RedditPost>> GetRedditPostByQueryAsync(string? owner, string? title, string? id)
+    public Task<ICollection<RedditPost>> GetRedditPostByQueryAsync(string? owner, string? title, string? id)
     {
-        ICollection<RedditPost> redditPostsSorted = _context.Posts;
-        if (!owner.Equals(""))
+        
+        ICollection<RedditPost> redditPostsSortedByQuery = _context.Posts;
+
+        if (!string.IsNullOrEmpty(owner))
         {
-            
+            redditPostsSortedByQuery = redditPostsSortedByQuery.Where(post => post.User.Username.Contains(owner, StringComparison.OrdinalIgnoreCase)).ToList();
         }
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            redditPostsSortedByQuery = redditPostsSortedByQuery.Where(post => post.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(id))
+        {
+            redditPostsSortedByQuery = redditPostsSortedByQuery.Where(post => post.Id.ToString().Contains(id, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        return Task.FromResult(redditPostsSortedByQuery);
+        
     }
 }

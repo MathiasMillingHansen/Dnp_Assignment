@@ -30,7 +30,6 @@ public class RedditPostHttpClient : IRedditPostService
     {
         
         string query = ConstructQuery(owner,title,id);
-        Console.WriteLine(query);
         
         HttpResponseMessage response = await _client.GetAsync("/RedditPost" + query);
         string content = await response.Content.ReadAsStringAsync();
