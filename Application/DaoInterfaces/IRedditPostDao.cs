@@ -10,4 +10,5 @@ public interface IRedditPostDao
     Task UpdateRedditPostAsync(RedditPost redditPost);
     Task<RedditPost> GetRedditPostById(int id);
     Task DeleteRedditPost(int id);
+    Task<ICollection<RedditPost>> GetRedditPostByQueryAsync(string? owner, string? title, string? id);
 }

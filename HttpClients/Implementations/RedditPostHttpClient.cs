@@ -28,12 +28,35 @@ public class RedditPostHttpClient : IRedditPostService
 
     public async Task<ICollection<RedditPost>> GetPostsAsync(string? owner, string? title, string? id)
     {
-        HttpResponseMessage response = await _client.GetAsync("/RedditPost");
+        
+        string query = ConstructQuery(owner,title,id);
+        Console.WriteLine(query);
+        
+        HttpResponseMessage response = await _client.GetAsync("/RedditPost" + query);
         string content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception(content);
         }
         return JsonSerializer.Deserialize<ICollection<RedditPost>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+    }
+
+    private static string ConstructQuery(string? owner, string? title, string? id)
+    {
+        string query = "";
+        if (!string.IsNullOrEmpty(owner))
+        {
+            query += $"?owner={owner}";
+        }
+        if (!string.IsNullOrEmpty(title))
+        {
+            query += string.IsNullOrEmpty(query) ? $"?title={title}" : $"&title={title}";
+        }
+        if (!string.IsNullOrEmpty(id))
+        {
+            query += string.IsNullOrEmpty(query) ? $"?id={id}" : $"&id={id}";
+        }
+
+        return query;
     }
 }

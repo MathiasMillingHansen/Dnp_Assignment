@@ -73,4 +73,13 @@ public class RedditPostFileDao : IRedditPostDao
     {
         throw new NotImplementedException();
     }
+
+    public async Task<ICollection<RedditPost>> GetRedditPostByQueryAsync(string? owner, string? title, string? id)
+    {
+        ICollection<RedditPost> redditPostsSorted = _context.Posts;
+        if (!owner.Equals(""))
+        {
+            
+        }
+    }
 }

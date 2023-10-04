@@ -10,4 +10,5 @@ public interface IRedditPostLogic
     Task UpdateRedditPostAsync(RedditPostUpdateDto redditPost);
     Task DeleteRedditPost(int id);
     Task<RedditPost> GetRedditPostById(int id);
+    Task<ICollection<RedditPost>> GetRedditPostByQuery(string? owner, string? title, string? id);
 }

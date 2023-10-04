@@ -46,6 +46,21 @@ public class RedditPostController : ControllerBase
         }
     }
 
+    [HttpGet]
+    public async Task<ActionResult<ICollection<RedditPost>>> GetFromQuery(string? owner, string? title, string? id)
+    {
+        try
+        {
+            ICollection<RedditPost> redditPosts = await _redditPostLogic.GetRedditPostByQuery(owner,title,id);
+            return Ok(redditPosts);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
     /*[HttpGet]
     public async Task<ActionResult<RedditPost>> GetByIdAsync([FromQuery] int id)
     {

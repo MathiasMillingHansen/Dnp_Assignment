@@ -71,6 +71,11 @@ public class RedditPostLogic : IRedditPostLogic
         return await redditPostDao.GetRedditPostById(id);
     }
 
+    public async Task<ICollection<RedditPost>> GetRedditPostByQuery(string? owner, string? title, string? id)
+    {
+        return await redditPostDao.GetRedditPostByQueryAsync(owner, title, id);
+    }
+
     private void ValidateRedditPost(RedditPostCreationDto dto)
     {
         if (string.IsNullOrEmpty(dto.Title)) throw new Exception("Title cannot be empty.");
