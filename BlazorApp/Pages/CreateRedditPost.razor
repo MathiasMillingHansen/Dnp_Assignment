@@ -91,7 +91,7 @@
 
         try
         {
-            RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser = new OwnerDto(_selectedUser.Username), _redditPostTitle, _redditPostBody);
+            RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser = new OwnerDto(_selectedUser.Username), _redditPostBody, _redditPostTitle);
             await RedditPostService.CreatePostAsync(dto);
             NavMgr.NavigateTo("/CreateRedditPost");
         }

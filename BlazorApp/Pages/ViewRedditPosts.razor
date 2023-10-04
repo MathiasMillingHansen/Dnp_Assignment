@@ -18,27 +18,42 @@ else if (!_redditPosts.Any())
 }
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Owner</th>
-            <th>Post ID</th>
-            <th>Title</th>
-            <th>Body</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in _redditPosts)
-        {
-            <tr>
-                <td>@item.User.Username</td>
-                <td>@item.Id.ToString()</td>
-                <td>@item.Title</td>
-                <td>@item.Body</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    @foreach (var item in _redditPosts)
+    {
+        <div class="border border-primary rounded ">
+
+            <span>
+
+                <div class="RedditPost" style="margin: 1em;">
+
+                    <div class="row" style="width:100%">
+
+                        <div class="col-4" style="justify-content: left; display: flex">
+                            <div class="PostOwner">@item.User.Username</div>
+                        </div>
+
+                        <div class="col-4" style="justify-content: center; display: flex">
+                            <div class="PostTitle">@item.Title</div>
+                        </div>
+
+                        <div class="col-4" style="justify-content: right; display: flex">
+                            <div class="PostId">Post Id: @item.Id.ToString()</div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="width:100%">
+                        
+                        <div class="PostBody">@item.Body</div>
+
+                    </div>
+
+                </div>
+
+            </span>
+
+        </div>
+    }
 }
 @if (!string.IsNullOrEmpty(_msg))
 {
@@ -53,12 +68,13 @@ else
     {
         try
         {
-            _redditPosts = await RedditPostService.GetPostsAsync("","","");
+            _redditPosts = await RedditPostService.GetPostsAsync("", "", "");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             _msg = e.Message;
         }
-    }  
+    }
+
 }
