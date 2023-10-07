@@ -162,6 +162,44 @@
     width: min-content;
 }
 
+.ViewUsersGeneral {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.CreateRedditPostViewGeneral {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.CreateUserViewGeneral {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.IndexHello{
+    color: black;
+    display: flex;
+    flex-flow: column;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 100%;
+    font-family: "Calibri";
+    justify-content: center;
+}
+
 .funnel{
     cursor: pointer;
     display: flex;

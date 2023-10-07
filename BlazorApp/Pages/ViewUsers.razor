@@ -2,7 +2,10 @@
 @using global::Shared.Models
 @using Clients.ClientInterfaces
 @inject IUserService UserService
-<h3 style="text-align: center">Overview of all users</h3>
+
+<div class="ViewUsersGeneral">
+    <h3 style="text-align: center">Overview of all users</h3>
+</div>
 
 @if (!string.IsNullOrEmpty(_msg))
 {
