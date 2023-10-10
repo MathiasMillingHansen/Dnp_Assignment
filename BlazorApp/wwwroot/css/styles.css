@@ -1,7 +1,7 @@
 ﻿.card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    width: 250px;
+    width: auto;
     padding: 25px;
     text-align: center;
     margin: auto;
@@ -13,6 +13,14 @@
     margin-top: 20px;
 }
 
+.reddit-post-body {
+    width: 100%;
+    min-width: 20em;
+    height: auto;
+    min-height: 20em;
+    resize: none;
+}
+
 .acceptbtn {
     background-color:lightgreen;
     border-radius: 5px;
@@ -21,19 +29,25 @@
     padding-right: 10px;
 }
 
-.button-row{
-    margin-top: 15px;
+.PostIconRow{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
 }
 
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 250px;
-    padding: 25px;
-    text-align: center;
-    margin: auto;
-    margin-top: 50px;
-    border-radius: 15px;
+.EditPostIcon{
+    cursor: pointer;
+    display: flex;
+    justify-content: right;
+    width: 2em;
+    height: 2em;
+}
+
+.button-row{
+    margin-top: 15px;
 }
 
 .field {

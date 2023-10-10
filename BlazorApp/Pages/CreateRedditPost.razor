@@ -25,16 +25,19 @@
         <h3>Create Reddit Post</h3>
         <div class="form-group field">
             <label>Title:</label>
+            <br/>
             <input type="text" @bind="_redditPostTitle"/>
         </div>
-        
-        
+
+        <br/>
+
+
         <div class="form-group-field">
             <label>Body:</label>
             <textarea @bind="_redditPostBody" style="resize: none;" class="reddit-post-body"></textarea>
         </div>
-        
-        
+
+
         <div class="form-group field">
             <label>Assignee:</label>
             <select @bind="_selectedUser">
@@ -45,8 +48,8 @@
                 }
             </select>
         </div>
-        
-        
+
+
         <div class="button-row">
             @if (!string.IsNullOrEmpty(_msg))
             {
@@ -110,7 +113,7 @@
             NavMgr.NavigateTo("/CreateRedditPost");
 
             _successMessage = "Post was created successfully!";
-            
+
             _selectedUser = null;
             _redditPostTitle = "";
             _redditPostBody = "";
@@ -121,4 +124,6 @@
             _msg = e.Message;
         }
     }
+
 }
+

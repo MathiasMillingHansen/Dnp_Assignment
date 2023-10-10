@@ -6,7 +6,7 @@
 @inject IUserService _userService
 @inject NavigationManager _navigationManager
 
-<h3>RedditPost</h3>
+<h3 style="display: flex; width: 100%; justify-content: center">Edit Reddit Post</h3>
 
 @code {
     [Parameter]
@@ -62,18 +62,18 @@
     }
     else if (dto == null)
     {
-        <label>Loading Todo data..</label>
+        <label>Loading Reddit Post data..</label>
     }
     else
     {
-        <h3>Update Todo</h3>
+        <h3>Update Reddit Post</h3>
         <div class="form-group field">
             <label>Post Id: @dto.Id.ToString()</label>
 
         </div>
         <div class="form-group field">
             <label>Post Body:</label>
-            <input type="text" class="form-control" @bind="dto.Body" />
+            <textarea @bind="dto.Body" class="reddit-post-body" style="resize: none"> </textarea>
         </div>
         <div class="button-row">
             <button @onclick="UpdateAsync" class="acceptbtn">Update</button>

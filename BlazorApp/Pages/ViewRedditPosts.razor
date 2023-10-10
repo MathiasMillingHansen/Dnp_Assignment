@@ -2,6 +2,7 @@
 @using global::Shared.Models
 @using Clients.ClientInterfaces
 @inject IRedditPostService RedditPostService;
+@inject NavigationManager _navigationManager;
 
 <h3 style="display: flex; width: 100%; justify-content: center">View Reddit Posts</h3>
 
@@ -76,6 +77,12 @@ else
                         <div class="PostBody">@item.Body</div>
                     </div>
 
+                </div>
+
+                <div class="PostIconRow">
+                    <div class="EditPostIcon">
+                        <img src="icons/editGif.gif" class="funnel" @onclick="@(() => _navigationManager.NavigateTo($"/EditRedditPost/{item.Id}"))"/>
+                    </div>
                 </div>
 
             </span>
