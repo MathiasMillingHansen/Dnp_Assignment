@@ -60,13 +60,24 @@ public class RedditPostFileDao : IRedditPostDao
 
     public Task UpdateRedditPostAsync(RedditPost redditPostToUpdate)
     {
+        RedditPost? redditPost = _context.Posts.FirstOrDefault(post => post.Id == redditPostToUpdate.Id);
+        if (redditPost == null)
+        {
+            throw new Exception(message: $"RedditPost with ID {redditPostToUpdate.Id} not found!");
+        }
+        redditPost.Body = redditPostToUpdate.Body;
         _context.SaveChanges();
         return Task.FromResult(redditPostToUpdate);
     }
 
     public Task<RedditPost> GetRedditPostById(int id)
     {
-        throw new NotImplementedException();
+        RedditPost? redditPost = _context.Posts.FirstOrDefault(post => post.Id == id);
+        if (redditPost == null)
+        {
+            throw new Exception(message: $"RedditPost with ID {id} not found!");
+        }
+        return Task.FromResult(redditPost);
     }
 
     public Task DeleteRedditPost(int id)

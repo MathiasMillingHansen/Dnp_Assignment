@@ -60,9 +60,24 @@ public class RedditPostController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpPatch("{id}")]
+    public async Task<ActionResult> PatchAsync(RedditPostUpdateDto dto)
+    {
+        try
+        {
+            await _redditPostLogic.UpdateRedditPostAsync(dto);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 
-    /*[HttpGet]
-    public async Task<ActionResult<RedditPost>> GetByIdAsync([FromQuery] int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<RedditPost>> GetByIdAsync([FromRoute] int id)
     {
         try
         {
@@ -74,7 +89,7 @@ public class RedditPostController : ControllerBase
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
         }
-    }*/
+    }
 
 
 }

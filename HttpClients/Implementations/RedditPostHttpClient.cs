@@ -40,6 +40,28 @@ public class RedditPostHttpClient : IRedditPostService
         return JsonSerializer.Deserialize<ICollection<RedditPost>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
     }
 
+    public async Task<RedditPostDto> GetPostByIdAsync(int id)
+    {
+        HttpResponseMessage response = await _client.GetAsync($"/RedditPost/{id}");
+        string content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(content);
+        }
+        RedditPostDto temp = JsonSerializer.Deserialize<RedditPostDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        return temp;
+    }
+
+    public async Task UpdateAsync(RedditPostUpdateDto dto)
+    {
+        HttpResponseMessage response = await _client.PatchAsync($"/RedditPost/{dto.Id}", JsonContent.Create(dto));
+        if (!response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+    }
+
     private static string ConstructQuery(string? owner, string? title, string? id)
     {
         string query = "";

@@ -2,12 +2,11 @@ namespace Shared.DTOs.RedditPost;
 
 public class RedditPostUpdateDto
 {
-    public int Id { get; }
+    public int Id { get; set; }
     public string Body { get; set; }
 
-    public RedditPostUpdateDto(int id, string body)
+    public RedditPostUpdateDto(string body)
     {
-        Id = id;
         Body = body;
     }
 }

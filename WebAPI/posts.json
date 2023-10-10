@@ -1,0 +1,28 @@
+{
+  "Posts": [
+    {
+      "Title": "Test",
+      "Body": "Is working",
+      "User": {
+        "Username": "Admin"
+      },
+      "Id": 1
+    },
+    {
+      "Title": "teest",
+      "Body": "etaduof",
+      "User": {
+        "Username": "Jens"
+      },
+      "Id": 2
+    },
+    {
+      "Title": "toahdnasd",
+      "Body": "aoefh80q9e",
+      "User": {
+        "Username": "Jens"
+      },
+      "Id": 3
+    }
+  ]
+}
