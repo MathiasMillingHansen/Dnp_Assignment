@@ -27,24 +27,34 @@
             <label>Title:</label>
             <input type="text" @bind="_redditPostTitle"/>
         </div>
-        <div class="form-group text-body">
+        
+        
+        <div class="form-group-field">
             <label>Body:</label>
-            <input type="text" @bind="_redditPostBody"/>
+            <textarea @bind="_redditPostBody" style="resize: none;" class="reddit-post-body"></textarea>
         </div>
+        
+        
         <div class="form-group field">
             <label>Assignee:</label>
             <select @bind="_selectedUser">
-            <option></option>
+                <option></option>
                 @foreach (User user in _users)
                 {
                     <option value="@user.Username">@user.Username</option>
                 }
             </select>
         </div>
+        
+        
         <div class="button-row">
             @if (!string.IsNullOrEmpty(_msg))
             {
                 <label style="color: red">@_msg</label>
+            }
+            @if (!string.IsNullOrEmpty(_successMessage))
+            {
+                <label style="color: green">@_successMessage</label>
             }
             <button @onclick="Create" class="acceptbtn">Create</button>
         </div>
@@ -58,6 +68,7 @@
     private string _redditPostBody = "";
 
     private string _msg = "";
+    private string _successMessage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,6 +108,12 @@
             RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser = new OwnerDto(_selectedUser.Username), _redditPostBody, _redditPostTitle);
             await RedditPostService.CreatePostAsync(dto);
             NavMgr.NavigateTo("/CreateRedditPost");
+
+            _successMessage = "Post was created successfully!";
+            
+            _selectedUser = null;
+            _redditPostTitle = "";
+            _redditPostBody = "";
         }
         catch (Exception e)
         {

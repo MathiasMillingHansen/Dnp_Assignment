@@ -44,6 +44,7 @@
         {
             await UserService.CreateUserAsync(new UserCreationDto(_username, _password));
             _username = "";
+            _password = "";
             _resultMsg = "User successfully created";
             _color = "green";
         }
