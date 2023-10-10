@@ -82,7 +82,16 @@ public class RedditPostFileDao : IRedditPostDao
 
     public Task DeleteRedditPost(int id)
     {
-        throw new NotImplementedException();
+        RedditPost? existing = _context.Posts.FirstOrDefault(_redditPosts => _redditPosts.Id == id);
+        if (existing == null)
+        {
+            throw new Exception($"Post with id {id} does not exist!");
+        }
+
+        _context.Posts.Remove(existing);
+        _context.SaveChanges();
+
+        return Task.CompletedTask;
     }
 
     public Task<ICollection<RedditPost>> GetRedditPostByQueryAsync(string? owner, string? title, string? id)

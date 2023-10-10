@@ -76,6 +76,12 @@ else
                     <div class="row" style="width:100%; padding: 1em">
                         <div class="PostBody">@item.Body</div>
                     </div>
+                    
+                    <div>
+                        <label @onclick="@(() => RemovePost(item.Id))" style="cursor:pointer; color: red; font-weight: bold">
+                                                &#x2717;
+                                            </label>
+                    </div>
 
                 </div>
 
@@ -116,5 +122,23 @@ else
             _msg = e.Message;
         }
     }
-
+    
+    private async Task RemovePost(int postId)
+    {
+        _msg = "";
+        try
+        {
+            await RedditPostService.DeletePostAsync(postId);
+        
+            var list = new List<RedditPost>(_redditPosts!);
+            list.RemoveAll(_redditPosts => _redditPosts.Id == postId);
+            _redditPosts = list.AsEnumerable();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            _msg = e.Message;
+        }
+    }
+    
 }

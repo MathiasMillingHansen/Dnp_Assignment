@@ -14,4 +14,5 @@ public interface IRedditPostService
     
     Task<RedditPostDto> GetPostByIdAsync(int id);
     Task UpdateAsync(RedditPostUpdateDto dto);
+    Task DeletePostAsync(int id);
 }

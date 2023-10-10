@@ -62,6 +62,16 @@ public class RedditPostHttpClient : IRedditPostService
         }
     }
 
+    public async Task DeletePostAsync(int id)
+    {
+        HttpResponseMessage response = await _client.DeleteAsync($"RedditPost/{id}");
+        if (!response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+    }
+
     private static string ConstructQuery(string? owner, string? title, string? id)
     {
         string query = "";
