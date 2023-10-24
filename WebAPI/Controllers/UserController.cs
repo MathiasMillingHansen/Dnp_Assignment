@@ -49,6 +49,25 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpGet("{username}")]
+    public async Task<ActionResult<GetUserWithPasswordDto>> GetByUsernameAsync(string username)
+    {
+        try
+        {
+            GetUserWithPasswordDto? user = await _userLogic.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
     
 
 }

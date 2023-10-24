@@ -8,7 +8,6 @@ namespace Application.Logic;
 
 public class UserLogic : IUserLogic
 {
-    
     private readonly IUserDao userDao;
 
     public UserLogic(IUserDao userDao)
@@ -23,9 +22,9 @@ public class UserLogic : IUserLogic
             throw new Exception("Username already taken!");
         ValidateData(userToCreate);
         User toCreate = new User(userToCreate.UserName, userToCreate.Password);
-    
+
         User created = await userDao.CreateAsync(toCreate);
-    
+
         return created;
     }
 
@@ -33,7 +32,7 @@ public class UserLogic : IUserLogic
     {
         return userDao.GetUser(searchParameters);
     }
-    
+
     private static void ValidateData(UserCreationDto userToCreate)
     {
         string userName = userToCreate.UserName;
@@ -53,9 +52,9 @@ public class UserLogic : IUserLogic
 
         ValidateData(userToCreate);
         User toCreate = new User(userToCreate.UserName, userToCreate.Password);
-    
+
         User created = await userDao.CreateAsync(toCreate);
-        
+
         return created;
     }
 
@@ -63,6 +62,15 @@ public class UserLogic : IUserLogic
     {
         throw new NotImplementedException();
     }
+
+    public async Task<GetUserWithPasswordDto?> GetUserByUsernameAsync(string userToGet)
+    {
+        GetUserWithPasswordDto userToReturn = new GetUserWithPasswordDto(
+            userDao.GetByUsername(userToGet).Result.Username,
+            userDao.GetByUsername(userToGet).Result.Password);
+        return userToReturn;
+    }
+
 
     public async Task<ICollection<GetUserDto>> GetAllUsersAsync()
     {

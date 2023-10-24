@@ -4,12 +4,10 @@ public class LoginUser
 {
     public string UserName { get; set; }
     public string Password { get; set; }
-    public string Role { get; set; }
     
-    public LoginUser(string userName, string password, string role)
+    public LoginUser(string userName, string password)
     {
         UserName = userName;
         Password = password;
-        Role = role;
     }
 }

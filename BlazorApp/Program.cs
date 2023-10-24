@@ -1,4 +1,6 @@
 using BlazorApp.Authentication;
+using BlazorApp.Services;
+using BlazorApp.Services.Impl;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Clients.ClientInterfaces;
@@ -13,6 +15,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IUserService, UserHttpClient>();
 builder.Services.AddScoped<IRedditPostService, RedditPostHttpClient>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthenticationStateProvider>();
+builder.Services.AddScoped<IAuthManager, AuthManagerImpl>();
+builder.Services.AddScoped<BlazorIUserService, BlazorIUserServiceImpl>();
 builder.Services.AddScoped(
     sp => 
         new HttpClient { 
