@@ -16,4 +16,8 @@
       <ProjectReference Include="..\FileData\FileData.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="users.json" />
+    </ItemGroup>
+
 </Project>

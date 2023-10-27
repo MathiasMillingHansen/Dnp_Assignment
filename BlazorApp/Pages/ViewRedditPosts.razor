@@ -3,6 +3,7 @@
 @using Clients.ClientInterfaces
 @inject IRedditPostService RedditPostService;
 @inject NavigationManager _navigationManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
 
 <h3 style="display: flex; width: 100%; justify-content: center">View Reddit Posts</h3>
 
@@ -76,20 +77,28 @@ else
                     <div class="row" style="width:100%; padding: 1em">
                         <div class="PostBody">@item.Body</div>
                     </div>
-                    
-                    <div>
-                        <label @onclick="@(() => RemovePost(item.Id))" style="cursor:pointer; color: red; font-weight: bold">
-                                                &#x2717;
-                                            </label>
-                    </div>
+
+                    <AuthorizeView>
+                        <Authorized>
+                            @if (context.User.Identity.Name == item.User.Username)
+                            {
+                            <div>
+                                <label @onclick="@(() => RemovePost(item.Id))" style="cursor:pointer; color: red; font-weight: bold">
+                                    &#x2717;
+                                </label>
+                            </div>
+
+                                <div class="PostIconRow">
+                                    <div class="EditPostIcon">
+                                        <img src="icons/editGif.gif" class="funnel" @onclick="@(() => _navigationManager.NavigateTo($"/EditRedditPost/{item.Id}"))"/>
+                                    </div>
+                                </div>}
+                        </Authorized>
+                    </AuthorizeView>
+
 
                 </div>
 
-                <div class="PostIconRow">
-                    <div class="EditPostIcon">
-                        <img src="icons/editGif.gif" class="funnel" @onclick="@(() => _navigationManager.NavigateTo($"/EditRedditPost/{item.Id}"))"/>
-                    </div>
-                </div>
 
             </span>
 
@@ -122,14 +131,21 @@ else
             _msg = e.Message;
         }
     }
-    
+
     private async Task RemovePost(int postId)
     {
+        var _owner = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity?.Name;
+        RedditPost temp = _redditPosts.FirstOrDefault(x => x.Id == postId)!;
+        if (temp.User.Username != _owner)
+        {
+            _msg = "You can only delete your own posts";
+            return;
+        }
         _msg = "";
         try
         {
             await RedditPostService.DeletePostAsync(postId);
-        
+
             var list = new List<RedditPost>(_redditPosts!);
             list.RemoveAll(_redditPosts => _redditPosts.Id == postId);
             _redditPosts = list.AsEnumerable();
@@ -140,5 +156,6 @@ else
             _msg = e.Message;
         }
     }
-    
+
 }
+

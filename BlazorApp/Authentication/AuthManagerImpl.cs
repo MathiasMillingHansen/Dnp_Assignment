@@ -15,7 +15,8 @@ public class AuthManagerImpl : IAuthManager
 
     public AuthManagerImpl(BlazorIUserService blazorIUserService, IJSRuntime jsRuntime)
     {
-        this._blazorIUserService = blazorIUserService;
+        
+        _blazorIUserService = blazorIUserService;
         this.jsRuntime = jsRuntime;
     }
 

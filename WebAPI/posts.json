@@ -9,20 +9,28 @@
       "Id": 1
     },
     {
-      "Title": "teest",
-      "Body": "etaduof",
-      "User": {
-        "Username": "Jens"
-      },
-      "Id": 2
-    },
-    {
       "Title": "toahdnasd",
       "Body": "aoefh80q9e",
       "User": {
         "Username": "Jens"
       },
       "Id": 3
+    },
+    {
+      "Title": "asfafgag",
+      "Body": "ghghedthtehet",
+      "User": {
+        "Username": "Admin"
+      },
+      "Id": 4
+    },
+    {
+      "Title": "Hej",
+      "Body": "Jeg hedder jens",
+      "User": {
+        "Username": "Jens"
+      },
+      "Id": 5
     }
   ]
 }

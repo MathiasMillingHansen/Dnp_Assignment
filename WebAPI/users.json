@@ -11,6 +11,14 @@
             "Username": "Admin"
           },
           "Id": 1
+        },
+        {
+          "Title": "asfafgag",
+          "Body": "ghghedthtehet",
+          "User": {
+            "Username": "Admin"
+          },
+          "Id": 4
         }
       ]
     },
@@ -33,6 +41,14 @@
             "Username": "Jens"
           },
           "Id": 3
+        },
+        {
+          "Title": "Hej",
+          "Body": "Jeg hedder jens",
+          "User": {
+            "Username": "Jens"
+          },
+          "Id": 5
         }
       ]
     },

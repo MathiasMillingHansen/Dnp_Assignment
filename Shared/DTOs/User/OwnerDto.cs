@@ -12,6 +12,11 @@ public class OwnerDto
     {
         Username = username;
     }
+    
+    public void setUsername(string Username)
+    {
+        this.Username = Username;
+    }
 }
 
 public class OwnerDtoConverter : TypeConverter
@@ -44,4 +49,6 @@ public class OwnerDtoConverter : TypeConverter
         }
         return base.ConvertTo(context, culture, value, destinationType);
     }
+
+
 }

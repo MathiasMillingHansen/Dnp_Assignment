@@ -3,9 +3,13 @@
 @using Clients.ClientInterfaces
 @using global::Shared.DTOs.RedditPost
 @using global::Shared.DTOs.User
+@using Microsoft.AspNetCore.Authentication
+@using System.Security.Claims
+@using BlazorApp.Authentication
 @inject IUserService UserService
 @inject IRedditPostService RedditPostService;
 @inject NavigationManager NavMgr;
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="CreateRedditPostViewGeneral">
     <h3>Create a Reddit Post</h3>
@@ -38,18 +42,6 @@
         </div>
 
 
-        <div class="form-group field">
-            <label>Assignee:</label>
-            <select @bind="_selectedUser">
-                <option></option>
-                @foreach (User user in _users)
-                {
-                    <option value="@user.Username">@user.Username</option>
-                }
-            </select>
-        </div>
-
-
         <div class="button-row">
             @if (!string.IsNullOrEmpty(_msg))
             {
@@ -66,7 +58,7 @@
 
 @code {
     private IEnumerable<User>? _users;
-    private OwnerDto _selectedUser;
+    private OwnerDto _selectedUser = new("Not selected");
     private string _redditPostTitle = "";
     private string _redditPostBody = "";
 
@@ -92,8 +84,15 @@
         _msg = "";
         if (_selectedUser == null)
         {
-            _msg = "You must select an assignee!";
-            return;
+            try
+            {
+                Console.WriteLine("User is null");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         if (string.IsNullOrEmpty(_redditPostTitle))
         {
@@ -108,7 +107,12 @@
 
         try
         {
-            RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser = new OwnerDto(_selectedUser.Username), _redditPostBody, _redditPostTitle);
+            var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authenticationState.User;
+            
+            _selectedUser = new OwnerDto(user.FindFirstValue(ClaimTypes.Name));
+            
+            RedditPostCreationDto dto = new RedditPostCreationDto(_selectedUser, _redditPostBody, _redditPostTitle);
             await RedditPostService.CreatePostAsync(dto);
             NavMgr.NavigateTo("/CreateRedditPost");
 
