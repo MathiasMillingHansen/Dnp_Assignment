@@ -13,7 +13,7 @@ namespace Clients.Implementations
         
         public UserHttpClient(HttpClient client)
         {
-            this._client = client;
+            _client = client;
         }
 
         public async Task<User> CreateUserAsync(UserCreationDto userToCreate)

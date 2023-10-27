@@ -56,6 +56,11 @@
       "Username": "Morten",
       "Password": "1234",
       "RedditPosts": []
+    },
+    {
+      "Username": "string",
+      "Password": "string",
+      "RedditPosts": []
     }
   ]
 }

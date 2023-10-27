@@ -11,7 +11,7 @@ public class BlazorIUserServiceImpl : BlazorIUserService
 
     public BlazorIUserServiceImpl(HttpClient client)
     {
-        this._client = client;
+        _client = client;
     }
 
     public async Task<LoginUser> GetUserAsync(string username)

@@ -1,9 +1,14 @@
+using System.Text;
 using Application.DaoInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
 using FileContext.DAOs;
 using FileData.DAOs;
 using FileData;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Shared.Auth;
+using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +23,34 @@ builder.Services.AddScoped<IUserDao, UserFileDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IRedditPostDao, RedditPostFileDao>();
 builder.Services.AddScoped<IRedditPostLogic, RedditPostLogic>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped(
+    sp => 
+        new HttpClient { 
+            BaseAddress = new Uri("https://localhost:7188") 
+        }
+);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+AuthorizationPolicies.AddPolicies(builder.Services);
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors(x => x
     .AllowAnyMethod()
