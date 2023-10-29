@@ -64,7 +64,7 @@ else
 
                         <div class="col-4" style="justify-content: center; display: flex; align-items: center">
                             <div class="PostTitle">
-                                <a class="LinkToPost" href="/RedditPost?id=@item.Id.ToString()">@item.Title</a>
+                                <a class="LinkToPost" @onclick="@(() => _navigationManager.NavigateTo($"/ViewSingleRedditPost/{item.Id}"))">@item.Title</a>
                             </div>
                         </div>
 
@@ -82,11 +82,11 @@ else
                         <Authorized>
                             @if (context.User.Identity.Name == item.User.Username)
                             {
-                            <div>
-                                <label @onclick="@(() => RemovePost(item.Id))" style="cursor:pointer; color: red; font-weight: bold">
-                                    &#x2717;
-                                </label>
-                            </div>
+                                <div>
+                                    <label @onclick="@(() => RemovePost(item.Id))" style="cursor:pointer; color: red; font-weight: bold">
+                                        &#x2717;
+                                    </label>
+                                </div>
 
                                 <div class="PostIconRow">
                                     <div class="EditPostIcon">
@@ -158,4 +158,3 @@ else
     }
 
 }
-
