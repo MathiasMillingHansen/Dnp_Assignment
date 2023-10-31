@@ -1,49 +1,60 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using Application.LogicInterfaces;
-using Shared.DTOs.User;
 using Shared.Models;
 
 namespace WebAPI.Services;
 
 public class AuthService : IAuthService
 {
-    private ICollection<User> users;
-    
-    private readonly HttpClient _client;
+    private ICollection<User> _users;
+
+    HttpClient _client;
 
     public AuthService(HttpClient client)
     {
         _client = client;
-        users = LoadUsers().Result;
+        _users = loadUsers().Result;
     }
 
-    
-
-    private async Task<ICollection<User>> LoadUsers()
+    private async Task<ICollection<User>> loadUsers()
     {
-        HttpResponseMessage response = await _client.GetAsync("User");
+        HttpResponseMessage response = await _client.GetAsync($"User");
         string result = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception(result);
         }
 
-        ICollection<User> temp = JsonSerializer.Deserialize<ICollection<User>>(result, new JsonSerializerOptions
+        ICollection<User> users = JsonSerializer.Deserialize<ICollection<User>>(result, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         })!;
-
-        return await Task.FromResult(temp);
+        return users;
     }
 
-    public Task<User> GetUser(string username, string password)
+    public Task<User> ValidateUser(string username, string password)
     {
-        throw new NotImplementedException();
+        User? existingUser = _users.FirstOrDefault(u =>
+            u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+        Console.WriteLine(existingUser.Username + existingUser.Password);
+
+        if (existingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (!existingUser.Password.Equals(password))
+        {
+            throw new Exception("Password mismatch");
+        }
+
+        Console.WriteLine("User validated and returned");
+
+        return Task.FromResult(existingUser);
     }
 
-    public async Task<User> RegisterUser(User user)
+    public Task RegisterUser(User user)
     {
         if (string.IsNullOrEmpty(user.Username))
         {
@@ -58,30 +69,13 @@ public class AuthService : IAuthService
 
         // save to persistence instead of list
 
-        HttpResponseMessage response = await _client.PostAsJsonAsync("User", user);
-        string result = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception(result);
-        }
+        _users.Add(user);
 
-        User newUser = JsonSerializer.Deserialize<User>(result, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        })!;
-        return newUser;
+        return Task.CompletedTask;
     }
 
-    public Task<User> ValidateTheUser(GetUserWithPasswordDto user)
+    public Task<User> GetUser(string username, string password)
     {
-        User? existingUser = users.FirstOrDefault(u =>
-            u.Username.Equals(user.Username, StringComparison.OrdinalIgnoreCase));
-
-        if (existingUser == null)
-        {
-            throw new Exception("User not found");
-        }
-
-        return Task.FromResult(existingUser);
+        throw new NotImplementedException();
     }
 }

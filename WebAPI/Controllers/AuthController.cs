@@ -1,11 +1,12 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Shared.Models;
-using WebAPI.Services;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs.User;
+using Shared.Models;
+using WebAPI.Services;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WebAPI.Controllers;
 
@@ -15,7 +16,7 @@ public class AuthController : ControllerBase
 {
     private readonly IConfiguration config;
     private readonly IAuthService authService;
-    
+
     public AuthController(IConfiguration config, IAuthService authService)
     {
         this.config = config;
@@ -24,14 +25,13 @@ public class AuthController : ControllerBase
     
     private List<Claim> GenerateClaims(User user)
     {
-        var claims = new List<Claim>
+        var claims = new[]
         {
-            new (JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
-            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new (JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-            new (ClaimTypes.Name, user.Username)
+            new Claim(JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            new Claim(ClaimTypes.Name, user.Username)
         };
-
         return claims.ToList();
     }
     
@@ -58,22 +58,21 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost, Route("login")]
-    public async Task<ActionResult> Login([FromBody] GetUserWithPasswordDto userFromBody)
+    public async Task<ActionResult> Login([FromBody] GetUserWithPasswordDto userLoginDto)
     {
         try
         {
-            Console.WriteLine("Login");
-            User user = await authService.ValidateTheUser(userFromBody);
-            Console.WriteLine(user.Username + user.Password);
-            Console.WriteLine("User validated");
+            Console.WriteLine("Login attempt");
+            User user = await authService.ValidateUser(userLoginDto.Username, userLoginDto.Password);
+            Console.WriteLine(user.Username + " logged in");
+            Console.WriteLine("Generating token");
             string token = GenerateJwt(user);
     
             return Ok(token);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
+            return BadRequest(e.Message);
         }
     }
 }

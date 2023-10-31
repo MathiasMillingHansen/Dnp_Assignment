@@ -77,7 +77,7 @@ public class UserLogic : IUserLogic
         ICollection<GetUserDto> users = new List<GetUserDto>();
         foreach (User user in await userDao.GetAllAsync())
         {
-            users.Add(new GetUserDto(user.Username));
+            users.Add(new GetUserDto(user.Username, user.Password));
         }
 
         return users;

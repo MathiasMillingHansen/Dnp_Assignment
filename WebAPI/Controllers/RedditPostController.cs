@@ -1,4 +1,6 @@
-﻿using Application.LogicInterfaces;
+﻿using System.Security.Claims;
+using Application.LogicInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.RedditPost;
 using Shared.Models;
@@ -76,11 +78,14 @@ public class RedditPostController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<RedditPost>> GetByIdAsync([FromRoute] int id)
     {
         try
         {
+            Claim? claims = User.Claims.FirstOrDefault();
+            Console.WriteLine(claims?.Value);
             RedditPost redditPost = await _redditPostLogic.GetRedditPostById(id);
             return Ok(redditPost);
         }
@@ -90,7 +95,8 @@ public class RedditPostController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
+    
+    //[Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] int id)
     {

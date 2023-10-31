@@ -10,9 +10,5 @@
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0-rc.2.23480.2" />
-    </ItemGroup>
-
 
 </Project>

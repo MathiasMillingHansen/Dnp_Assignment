@@ -1,30 +1,6 @@
 {
   "Posts": [
     {
-      "Title": "Test",
-      "Body": "Is working",
-      "User": {
-        "Username": "Admin"
-      },
-      "Id": 1
-    },
-    {
-      "Title": "toahdnasd",
-      "Body": "aoefh80q9e",
-      "User": {
-        "Username": "Jens"
-      },
-      "Id": 3
-    },
-    {
-      "Title": "asfafgag",
-      "Body": "ghghedthtehet",
-      "User": {
-        "Username": "Admin"
-      },
-      "Id": 4
-    },
-    {
       "Title": "Hej",
       "Body": "Jeg hedder jens",
       "User": {
